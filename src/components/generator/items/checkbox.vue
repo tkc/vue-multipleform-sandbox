@@ -16,7 +16,6 @@ import { ref, watch, defineComponent, PropType } from "vue";
 import * as types from "../../../types";
 import { UpdateEvent } from "../../../store/namespaces/input";
 import { useStore } from "vuex";
-import input from "ant-design-vue/lib/input";
 
 export default defineComponent({
   props: {
@@ -29,7 +28,6 @@ export default defineComponent({
     const store = useStore();
     const model = ref(false);
 
-    // 初期値
     model.value = props.input.value as boolean;
 
     watch(model, (value, oldValue) => {

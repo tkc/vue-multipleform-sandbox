@@ -64,6 +64,7 @@ export default defineComponent({
   display: flex;
   justify-content: flex-start;
 }
+
 label {
   margin-right: 10px;
   border: solid 1px #0000;

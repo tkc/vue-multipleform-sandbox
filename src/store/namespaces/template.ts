@@ -5,7 +5,12 @@ export interface FormEvent extends Omit<types.Form, "id" | "Inputs"> {
   Inputs: TemplateEvent[];
 }
 
-export interface TemplateEvent extends Omit<types.Input, "form_id"> {}
+export interface TemplateRadio extends Omit<types.Radio, "form_id"> {}
+
+export interface TemplateEvent
+  extends Omit<types.Input, "form_id" | "radioOptions"> {
+  radioOptions: TemplateRadio[];
+}
 
 export interface TemplateState {
   form: FormEvent;
@@ -103,10 +108,9 @@ export function add(state: TemplateState, event: TemplateEvent) {
       });
       break;
     case "radio":
-      const options: types.Radio[] = [
+      const options: TemplateRadio[] = [
         {
           id: uuidv4(),
-          form_id: "",
           input_id: event.id,
           version: "v1",
           label: "radio1",
@@ -132,22 +136,27 @@ export function add(state: TemplateState, event: TemplateEvent) {
 
 export function set(state: TemplateState, event: TemplateEvent) {
   state.form.Inputs.filter((e: TemplateEvent) => e.id === event.id).length > 0
-    ? (state.form.Inputs = state.form.Inputs.map((e: TemplateEvent) =>
+    ? state.form.Inputs.forEach((e, index) =>
         e.id === event.id
-          ? {
-              ...event,
-              label: event.label ? event.label : e.label,
-              value: event.value ? event.value : e.value,
-              description: event.description
-                ? event.description
-                : e.description,
-              radioOptions: event.radioOptions
-                ? event.radioOptions
-                : e.radioOptions,
-            }
-          : e
-      ))
+          ? state.form.Inputs.splice(index, 1, setTemplateValue(e, event))
+          : null
+      )
     : null;
+}
+
+function setTemplateValue(
+  origin: TemplateEvent,
+  update: TemplateEvent
+): TemplateEvent {
+  return {
+    ...origin,
+    label: update.label ? update.label : origin.label,
+    value: update.value ? update.value : origin.value,
+    description: update.description ? update.description : origin.description,
+    radioOptions: update.radioOptions
+      ? update.radioOptions
+      : origin.radioOptions,
+  };
 }
 
 export function del(state: TemplateState, id: string) {
@@ -167,7 +176,6 @@ export function addRadioOption(state: TemplateState, inputID: string) {
           1,
           {
             id: uuidv4(),
-            form_id: "",
             input_id: state.form.Inputs[index].id,
             version: "v1",
             label: "",
@@ -207,9 +215,9 @@ export const delRadioOption = (state: TemplateState, event: types.Radio) => {
 };
 
 const updatedRadioOptionValue = (
-  origin: types.Radio,
-  updated: types.Radio
-): types.Radio => {
+  origin: TemplateRadio,
+  updated: TemplateRadio
+): TemplateRadio => {
   const label = updated.label.length > 0 ? updated.label : origin.label;
   return {
     ...origin,

@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
 import Selector from "./selector.vue";
 import * as types from "../../types";
 import { useStore } from "vuex";
@@ -29,17 +28,11 @@ export default defineComponent({
     const store = useStore();
 
     // 初期化処理
-    props.form.Inputs.forEach((input) => {
-      // store.commit('a/increment', {
-      store.commit("input/set", {
-        form_id: input.form_id,
-        input_id: input.id,
-        value: input.value,
-      });
-    });
+    store.commit("input/reset", props.form.Inputs);
 
     const submit = () => {
       console.log("submit!");
+      console.log(store.state.input.events);
     };
 
     const inputs = props.form.Inputs.sort(function (a, b) {

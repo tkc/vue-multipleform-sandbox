@@ -23,7 +23,6 @@ export default defineComponent({
     const store = useStore();
     const model = ref(0);
 
-    // 初期値
     model.value = props.input.value as number;
 
     watch(model, (value, oldValue) => {

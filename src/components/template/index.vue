@@ -55,37 +55,6 @@ export default defineComponent({
       });
     });
 
-    // TODO : for debug
-    store.commit("template/add", {
-      id: uuidv4(),
-      type: "text",
-      sort_order: store.state.template.form.Inputs.length + 1,
-    });
-
-    store.commit("template/add", {
-      id: uuidv4(),
-      type: "radio",
-      sort_order: store.state.template.form.Inputs.length + 1,
-    });
-
-    store.commit("template/add", {
-      id: uuidv4(),
-      type: "checkbox",
-      sort_order: store.state.template.form.Inputs.length + 1,
-    });
-
-    store.commit("template/add", {
-      id: uuidv4(),
-      type: "number",
-      sort_order: store.state.template.form.Inputs.length + 1,
-    });
-
-    store.commit("template/add", {
-      id: uuidv4(),
-      type: "texterea",
-      sort_order: store.state.template.form.Inputs.length + 1,
-    });
-
     return {
       select,
       inputs: store.state.template.form.Inputs,
