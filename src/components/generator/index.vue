@@ -32,7 +32,7 @@ export default defineComponent({
 
     const submit = () => {
       console.log("submit!");
-      console.log(store.state.input.events);
+      console.log(JSON.parse(JSON.stringify(store.state.input)));
     };
 
     const inputs = props.form.Inputs.sort(function (a, b) {

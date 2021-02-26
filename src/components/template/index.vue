@@ -60,7 +60,7 @@ export default defineComponent({
 
     const submit = () => {
       console.log("submit!");
-      console.log(store.state.template.form);
+      console.log(JSON.parse(JSON.stringify(store.state.template)));
     };
 
     return {
