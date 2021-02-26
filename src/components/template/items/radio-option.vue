@@ -20,7 +20,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const label = ref("");
+    const label = ref(props.input.label);
 
     watch(label, (value, oldValue) => {
       store.commit("template/updateRadioOption", {

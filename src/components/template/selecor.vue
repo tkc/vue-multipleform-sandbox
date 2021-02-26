@@ -1,22 +1,27 @@
 <template>
   <div v-for="(input, key) in inputs" :key="key">
     <textInput
+      :key="input.id"
       :input="input"
       v-if="input.version === 'v1' && input.type === 'text'"
     />
     <texterea
+      :key="input.id"
       :input="input"
       v-if="input.version === 'v1' && input.type === 'texterea'"
     />
     <number
+      :key="input.id"
       :input="input"
       v-if="input.version === 'v1' && input.type === 'number'"
     />
     <radio
+      :key="input.id"
       :input="input"
       v-if="input.version === 'v1' && input.type === 'radio'"
     />
     <checkbox
+      :key="input.id"
       :input="input"
       v-if="input.version === 'v1' && input.type === 'checkbox'"
     />

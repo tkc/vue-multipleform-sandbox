@@ -39,8 +39,8 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const label = ref("");
-    const description = ref("");
+    const label = ref(props.input.label);
+    const description = ref(props.input.description);
 
     watch(label, (value, oldValue) => {
       store.commit("template/set", {

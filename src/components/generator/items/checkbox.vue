@@ -26,9 +26,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const model = ref(false);
-
-    model.value = props.input.value as boolean;
+    const model = ref(props.input.value as boolean);
 
     watch(model, (value, oldValue) => {
       const e: UpdateEvent = {

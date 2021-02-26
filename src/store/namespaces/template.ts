@@ -71,7 +71,7 @@ export function add(state: TemplateState, event: TemplateEvent) {
         version: "v1",
         sort_order: event.sort_order,
         type: event.type,
-        label: event.type,
+        label: event.label,
         value: "",
         required: true,
         validation: undefined,
@@ -85,7 +85,7 @@ export function add(state: TemplateState, event: TemplateEvent) {
         version: "v1",
         sort_order: event.sort_order,
         type: event.type,
-        label: event.type,
+        label: event.label,
         value: 0,
         required: true,
         validation: undefined,
@@ -99,7 +99,7 @@ export function add(state: TemplateState, event: TemplateEvent) {
         version: "v1",
         sort_order: event.sort_order,
         type: event.type,
-        label: event.type,
+        label: event.label,
         value: true,
         required: true,
         validation: undefined,
@@ -122,7 +122,7 @@ export function add(state: TemplateState, event: TemplateEvent) {
         version: "v1",
         sort_order: event.sort_order,
         type: event.type,
-        label: event.type,
+        label: event.label,
         value: options[0].value,
         required: true,
         validation: undefined,
@@ -160,9 +160,13 @@ function setTemplateValue(
 }
 
 export function del(state: TemplateState, id: string) {
-  state.form.Inputs.forEach((e, index) =>
-    e.id == id ? state.form.Inputs.splice(index, 1) : null
-  );
+  const inputs = JSON.parse(JSON.stringify(state.form.Inputs));
+  state.form.Inputs.splice(0, state.form.Inputs.length);
+  inputs.forEach((e: TemplateEvent) => {
+    if (e.id !== id) {
+      state.form.Inputs.push(e);
+    }
+  });
 }
 
 //【Vue】配列の追加・削除には注意が必要
