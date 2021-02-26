@@ -1,12 +1,10 @@
 <template>
   <div>
     <h3>{{ input.label }}</h3>
-    <input
-      type="checkbox"
-      true-value="true"
-      false-value="false"
-      v-model="model"
-    />
+    <div v-for="(option, key) in input.options" :key="key">
+      <input type="checkbox" :value="option.label" v-model="model" />
+      <label :for="option.label">{{ option.label }}</label>
+    </div>
     <p>{{ input.description }}</p>
   </div>
 </template>
@@ -26,7 +24,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const model = ref(props.input.value as boolean);
+    const model = ref((props.input.value));
 
     watch(model, (value, oldValue) => {
       const e: UpdateEvent = {
@@ -36,6 +34,7 @@ export default defineComponent({
       };
       store.commit("input/set", e);
     });
+
     return {
       model,
       input: props.input,

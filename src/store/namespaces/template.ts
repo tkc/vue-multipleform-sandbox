@@ -3,17 +3,22 @@ import { v4 as uuidv4 } from "uuid";
 
 export interface FormEvent extends Omit<types.Form, "id" | "Inputs"> {
   Inputs: TemplateEvent[];
+  valid: boolean;
 }
 
-export interface TemplateRadio extends Omit<types.Radio, "form_id"> {}
+export interface TemplateOption extends Omit<types.Option, "form_id"> {
+  valid: boolean;
+}
 
 export interface TemplateEvent
-  extends Omit<types.Input, "form_id" | "radioOptions"> {
-  radioOptions: TemplateRadio[];
+  extends Omit<types.Input, "form_id" | "options"> {
+  options: TemplateOption[];
+  valid: boolean;
 }
 
 export interface TemplateState {
   form: FormEvent;
+  valid: boolean;
 }
 
 export const InitialState: TemplateState = {
@@ -21,7 +26,9 @@ export const InitialState: TemplateState = {
     Version: "v1",
     title: "",
     Inputs: [],
+    valid: false,
   },
+  valid: false,
 };
 
 export const store = {
@@ -43,14 +50,15 @@ export const store = {
       // https://qiita.com/_masa_u/items/f9076777b044673eea2a
       del(state, id);
     },
+    // TODO : rename addRadioOption to Option
     addRadioOption(state: TemplateState, inputID: string) {
-      addRadioOption(state, inputID);
+      addOption(state, inputID);
     },
-    updateRadioOption(state: TemplateState, event: types.Radio) {
-      updateRadioOption(state, event);
+    updateRadioOption(state: TemplateState, event: TemplateOption) {
+      updateOption(state, event);
     },
-    delRadioOption(state: TemplateState, event: types.Radio) {
-      delRadioOption(state, event);
+    delRadioOption(state: TemplateState, event: TemplateOption) {
+      delOption(state, event);
     },
     setForm(state: TemplateState, event: FormEvent) {
       setFormTitle(state, event.title);
@@ -76,7 +84,8 @@ export function add(state: TemplateState, event: TemplateEvent) {
         required: true,
         validation: undefined,
         description: "",
-        radioOptions: [],
+        options: [],
+        valid: false,
       });
       break;
     case "number":
@@ -90,31 +99,20 @@ export function add(state: TemplateState, event: TemplateEvent) {
         required: true,
         validation: undefined,
         description: "",
-        radioOptions: [],
-      });
-      break;
-    case "checkbox":
-      state.form.Inputs.push({
-        id: event.id,
-        version: "v1",
-        sort_order: event.sort_order,
-        type: event.type,
-        label: event.label,
-        value: true,
-        required: true,
-        validation: undefined,
-        description: "",
-        radioOptions: [],
+        options: [],
+        valid: false,
       });
       break;
     case "radio":
-      const options: TemplateRadio[] = [
+    case "checkbox":
+      const options: TemplateOption[] = [
         {
           id: uuidv4(),
           input_id: event.id,
           version: "v1",
-          label: "radio1",
-          value: "radio1",
+          label: "",
+          value: "",
+          valid: false,
         },
       ];
       state.form.Inputs.push({
@@ -127,7 +125,8 @@ export function add(state: TemplateState, event: TemplateEvent) {
         required: true,
         validation: undefined,
         description: "",
-        radioOptions: options,
+        options: options,
+        valid: false,
       });
       break;
     default:
@@ -142,20 +141,23 @@ export function set(state: TemplateState, event: TemplateEvent) {
           : null
       )
     : null;
+  // valid
+  state.valid = validteState(state);
 }
 
 function setTemplateValue(
   origin: TemplateEvent,
   update: TemplateEvent
 ): TemplateEvent {
+  const label = update.label ? update.label : origin.label;
+  const description = update.description
+    ? update.description
+    : origin.description;
   return {
     ...origin,
-    label: update.label ? update.label : origin.label,
-    value: update.value ? update.value : origin.value,
-    description: update.description ? update.description : origin.description,
-    radioOptions: update.radioOptions
-      ? update.radioOptions
-      : origin.radioOptions,
+    label: label,
+    description: description,
+    options: update.options ? update.options : origin.options,
   };
 }
 
@@ -167,16 +169,18 @@ export function del(state: TemplateState, id: string) {
       state.form.Inputs.push(e);
     }
   });
+  // valid
+  state.valid = validteState(state);
 }
 
 //【Vue】配列の追加・削除には注意が必要
 // https://qiita.com/_masa_u/items/f9076777b044673eea2a
 
-export function addRadioOption(state: TemplateState, inputID: string) {
+export function addOption(state: TemplateState, inputID: string) {
   state.form.Inputs.forEach((e: TemplateEvent, index: number) =>
     e.id === inputID
-      ? state.form.Inputs[index].radioOptions.splice(
-          state.form.Inputs[index].radioOptions.length,
+      ? state.form.Inputs[index].options.splice(
+          state.form.Inputs[index].options.length,
           1,
           {
             id: uuidv4(),
@@ -184,18 +188,21 @@ export function addRadioOption(state: TemplateState, inputID: string) {
             version: "v1",
             label: "",
             value: "",
+            valid: false,
           }
         )
       : null
   );
+  // valid
+  state.valid = validteState(state);
 }
 
-export const updateRadioOption = (state: TemplateState, event: types.Radio) =>
+export const updateOption = (state: TemplateState, event: TemplateOption) => {
   state.form.Inputs.forEach((e: TemplateEvent, index1: number) =>
-    e.id === event.form_id
-      ? e.radioOptions.forEach((o, index2) =>
+    e.id === event.input_id
+      ? e.options.forEach((o, index2) =>
           o.id === event.id
-            ? state.form.Inputs[index1].radioOptions.splice(
+            ? state.form.Inputs[index1].options.splice(
                 index2,
                 1,
                 updatedRadioOptionValue(o, event)
@@ -204,28 +211,48 @@ export const updateRadioOption = (state: TemplateState, event: types.Radio) =>
         )
       : null
   );
+  // valid
+  state.valid = validteState(state);
+};
 
-export const delRadioOption = (state: TemplateState, event: types.Radio) => {
+export const delOption = (state: TemplateState, event: TemplateOption) => {
+  // TODO : if options length is 1 dont remove option
   const inputs = state.form.Inputs;
   inputs.forEach((i, index1) =>
-    i.radioOptions.forEach((r, index2) => {
-      state.form.Inputs[index1].radioOptions.splice(
-        0,
-        state.form.Inputs[0].radioOptions.length
-      );
-      r.id === event.id ? inputs[index1].radioOptions.splice(index2, 1) : null;
+    i.options.forEach((o, index2) => {
+      // TODO : fix bug
+      o.id === event.id ? inputs[index1].options.splice(index2, 1) : null;
     })
   );
+  // valid
+  state.valid = validteState(state);
 };
 
 const updatedRadioOptionValue = (
-  origin: TemplateRadio,
-  updated: TemplateRadio
-): TemplateRadio => {
+  origin: TemplateOption,
+  updated: TemplateOption
+): TemplateOption => {
   const label = updated.label.length > 0 ? updated.label : origin.label;
   return {
     ...origin,
     label: label,
     value: label,
+    valid: label.length > 0,
   };
+};
+
+// TODO : Check all elemnts and update each state
+const validteState = (state: TemplateState): boolean => {
+  let valid = true;
+  state.form.Inputs.forEach((i) => {
+    if (!i.label || !i.description) {
+      valid = false;
+    }
+    i.options.forEach((o) => {
+      if (!o.label) {
+        valid = false;
+      }
+    });
+  });
+  return valid;
 };

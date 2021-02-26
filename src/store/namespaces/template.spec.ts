@@ -8,7 +8,9 @@ function createNewMockState(): templateState.TemplateState {
       Version: "v1",
       title: "",
       Inputs: [],
+      valid: false,
     },
+    valid: false,
   };
 }
 
@@ -24,7 +26,8 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
 
     templateState.add(state, event1);
@@ -40,7 +43,8 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
 
     templateState.add(state, event2);
@@ -59,7 +63,8 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
 
     templateState.add(state, event);
@@ -88,7 +93,8 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
 
     templateState.add(state, event);
@@ -110,7 +116,8 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
     templateState.add(state, event1);
     expect(state.form.Inputs.length).toBe(1);
@@ -124,7 +131,8 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
     templateState.add(state, event2);
     expect(state.form.Inputs.length).toBe(2);
@@ -145,14 +153,15 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
 
     templateState.add(state, event);
     expect(state.form.Inputs[0].type).toBe(event.type);
     expect(state.form.Inputs.length).toBe(1);
     templateState.addRadioOption(state, event.id);
-    expect(state.form.Inputs[0].radioOptions.length).toBe(2);
+    expect(state.form.Inputs[0].options.length).toBe(2);
   });
 
   test("updateRadioOption", () => {
@@ -166,26 +175,27 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
 
     templateState.add(state, event);
     expect(state.form.Inputs[0].type).toBe(event.type);
     expect(state.form.Inputs.length).toBe(1);
 
-    const updateEvent = state.form.Inputs[0].radioOptions[0];
+    const updateEvent = state.form.Inputs[0].options[0];
 
     templateState.updateRadioOption(state, {
       id: updateEvent.id,
-      form_id: "",
       input_id: updateEvent.input_id,
       version: updateEvent.version,
       label: updateEvent.label,
       value: updateEvent.value,
+      valid: false,
     });
 
-    expect(state.form.Inputs[0].radioOptions[0].value).toBe(updateEvent.label);
-    expect(state.form.Inputs[0].radioOptions.length).toBe(1);
+    expect(state.form.Inputs[0].options[0].value).toBe(updateEvent.label);
+    expect(state.form.Inputs[0].options.length).toBe(1);
   });
 
   test("delRadioOption", () => {
@@ -199,7 +209,8 @@ describe("TemplateState", () => {
       value: undefined,
       required: true,
       description: "",
-      radioOptions: [],
+      options: [],
+      valid: false,
     };
 
     templateState.add(state, event);
@@ -207,16 +218,16 @@ describe("TemplateState", () => {
     expect(state.form.Inputs.length).toBe(1);
 
     // TOOD : use speciality event interface for delete.
-    const delEvent = state.form.Inputs[0].radioOptions[0];
+    const delEvent = state.form.Inputs[0].options[0];
     templateState.delRadioOption(state, {
       id: delEvent.id,
-      form_id: "",
       input_id: delEvent.input_id,
       version: delEvent.version,
       label: delEvent.label,
       value: delEvent.value,
+      valid: false,
     });
-    expect(state.form.Inputs[0].radioOptions.length).toBe(0);
+    expect(state.form.Inputs[0].options.length).toBe(0);
   });
 
   test("setFormTitle", () => {

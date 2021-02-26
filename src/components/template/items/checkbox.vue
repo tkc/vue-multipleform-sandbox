@@ -1,22 +1,32 @@
 <template>
   <div class="wraper">
-    <h3>Checkbox</h3>
+    <h3>CheckBox</h3>
     <div class="box">
-      <label for="">Label</label>
-      <input type="text" v-model="label" />
-      <label for="">Description</label>
-      <textarea v-model="description"></textarea>
+      <div>
+        <div class="inner_box">
+          <label>Label</label>
+          <input type="text" v-model="label" />
+          <label>Description</label>
+          <textarea v-model="description"></textarea>
+        </div>
+        <Option :input="option" v-for="(option, key) in options" :key="key" />
+      </div>
+      <div class="footer">
+        <a-button v-on:click="add">Add Option</a-button>
+        <a-button v-on:click="del">Delete</a-button>
+      </div>
     </div>
-    <a-button v-on:click="del">Delete Checkbox</a-button>
   </div>
 </template>
 
 <script lang="ts">
 import { ref, watch, defineComponent, PropType } from "vue";
 import * as types from "../../../types";
+import Option from "./option.vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
+  components: { Option },
   props: {
     input: {
       type: Object as PropType<types.Input>,
@@ -42,13 +52,15 @@ export default defineComponent({
       });
     });
 
+    const add = () => store.commit("template/addRadioOption", props.input.id);
     const del = () => store.commit("template/del", props.input.id);
 
     return {
+      add,
+      del,
       label,
       description,
-      input: props.input,
-      del,
+      options: props.input.options,
     };
   },
 });
@@ -60,6 +72,12 @@ export default defineComponent({
 }
 
 .box {
+  padding: 10px;
+  margin: 10px;
+  justify-content: flex-start;
+}
+
+.inner_box {
   padding: 10px;
   margin: 10px;
   display: flex;
@@ -76,11 +94,20 @@ label {
   font-size: 10px;
   height: 20px;
   display: flex;
+  justify-content: center;
 }
 
 input {
   margin-right: 10px;
   height: 25px;
   border-width: 1px;
+}
+
+.footer {
+  margin-top: 30px;
+}
+
+.footer button {
+  margin-right: 20px;
 }
 </style>

@@ -2,6 +2,7 @@
   <div class="box">
     <label>Option</label>
     <input type="text" v-model="label" />
+    <!-- // TODO : if options length is 1 dont remove option -->
     <a-button size="small" v-on:click="del">Delete</a-button>
   </div>
 </template>
@@ -14,7 +15,7 @@ import { useStore } from "vuex";
 export default defineComponent({
   props: {
     input: {
-      type: Object as PropType<types.Radio>,
+      type: Object as PropType<types.Option>,
       required: true,
     },
   },
@@ -29,6 +30,7 @@ export default defineComponent({
       });
     });
 
+    // TODO : if options length is 1 dont remove option
     const del = () => store.commit("template/delRadioOption", props.input);
 
     return {

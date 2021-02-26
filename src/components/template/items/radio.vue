@@ -9,15 +9,11 @@
           <label>Description</label>
           <textarea v-model="description"></textarea>
         </div>
-        <RadioOption
-          :input="option"
-          v-for="(option, key) in options"
-          :key="key"
-        />
+        <Option :input="option" v-for="(option, key) in options" :key="key" />
       </div>
       <div class="footer">
-        <a-button v-on:click="add">Add Radio Option</a-button>
-        <a-button v-on:click="del">Delete Radio</a-button>
+        <a-button v-on:click="add">Add Option</a-button>
+        <a-button v-on:click="del">Delete</a-button>
       </div>
     </div>
   </div>
@@ -26,11 +22,11 @@
 <script lang="ts">
 import { ref, watch, defineComponent, PropType } from "vue";
 import * as types from "../../../types";
-import RadioOption from "./radio-option.vue";
+import Option from "./option.vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: { RadioOption },
+  components: { Option },
   props: {
     input: {
       type: Object as PropType<types.Input>,
@@ -64,7 +60,7 @@ export default defineComponent({
       del,
       label,
       description,
-      options: props.input.radioOptions,
+      options: props.input.options,
     };
   },
 });

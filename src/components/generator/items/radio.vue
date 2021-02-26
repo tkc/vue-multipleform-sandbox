@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>{{ input.label }}</h3>
-    <div v-for="(option, key) in input.radioOptions" :key="key">
+    <div v-for="(option, key) in input.options" :key="key">
       <input
         type="radio"
         v-if="input.version === 'v1'"

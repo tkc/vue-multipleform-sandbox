@@ -1,5 +1,5 @@
 export type InputType = "text" | "texterea" | "radio" | "checkbox" | "number";
-export type Version = "v1" | "v2";
+export type Version = "v1";
 
 export interface Form {
   readonly id: string;
@@ -15,7 +15,7 @@ export interface validation {
   };
 }
 
-export type InputVersion = "v1" | "v2";
+export type InputVersion = "v1";
 
 export interface Input {
   readonly id: string;
@@ -24,14 +24,14 @@ export interface Input {
   sort_order: number;
   readonly type: InputType;
   label: string;
-  value: number | string | boolean | undefined;
+  value: number | string | boolean | undefined | string[] | number[];
   required: boolean;
   validation?: validation | undefined;
   description: string;
-  radioOptions: Radio[];
+  options: Option[];
 }
 
-export interface Radio {
+export interface Option {
   id: string;
   form_id: string;
   input_id: string;

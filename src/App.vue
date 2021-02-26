@@ -29,7 +29,7 @@ const craateMockForm = (): Form => {
         value: "test...",
         required: true,
         validation: undefined,
-        radioOptions: [],
+        options: [],
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ",
       },
@@ -43,7 +43,7 @@ const craateMockForm = (): Form => {
         value: "texterea...",
         required: true,
         validation: undefined,
-        radioOptions: [],
+        options: [],
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ",
       },
@@ -57,7 +57,7 @@ const craateMockForm = (): Form => {
         value: 100,
         required: true,
         validation: undefined,
-        radioOptions: [],
+        options: [],
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ",
       },
@@ -71,7 +71,7 @@ const craateMockForm = (): Form => {
         value: "radio1",
         required: true,
         validation: undefined,
-        radioOptions: [
+        options: [
           {
             id: uuidv4(),
             form_id: formID,
@@ -123,10 +123,51 @@ const craateMockForm = (): Form => {
         sort_order: 4,
         type: "checkbox",
         label: "Checkbox",
-        value: true,
+        value: ["radio1"],
         required: true,
         validation: undefined,
-        radioOptions: [],
+        options: [
+          {
+            id: uuidv4(),
+            form_id: formID,
+            input_id: radioInputID,
+            version: "v1",
+            label: "radio1",
+            value: "radio1",
+          },
+          {
+            id: uuidv4(),
+            form_id: formID,
+            input_id: radioInputID,
+            version: "v1",
+            label: "radio2",
+            value: "radio2",
+          },
+          {
+            id: uuidv4(),
+            form_id: formID,
+            input_id: radioInputID,
+            version: "v1",
+            label: "radio3",
+            value: "radio3",
+          },
+          {
+            id: uuidv4(),
+            form_id: formID,
+            input_id: radioInputID,
+            version: "v1",
+            label: "radio4",
+            value: "radio4",
+          },
+          {
+            id: uuidv4(),
+            form_id: formID,
+            input_id: radioInputID,
+            version: "v1",
+            label: "radio5",
+            value: "radio5",
+          },
+        ],
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ",
       },
