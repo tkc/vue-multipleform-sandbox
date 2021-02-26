@@ -4,7 +4,7 @@
     <div>
       <Selector :inputs="inputs" />
     </div>
-    <div>
+    <div class="footer">
       <a-button v-on:click="submit" type="primary">Submit</a-button>
     </div>
   </div>
@@ -54,5 +54,11 @@ export default defineComponent({
   border: solid 2px #eee;
   padding: 10px;
   margin: 10px;
+}
+
+.footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
 }
 </style>

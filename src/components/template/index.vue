@@ -8,14 +8,17 @@
     <div class="selecor">
       <Selecor :inputs="inputs" />
     </div>
-    <select v-model="select">
-      <option value="none">Select</option>
-      <option value="text">Add Text</option>
-      <option value="texterea">Add Texterea</option>
-      <option value="radio">Add Radio</option>
-      <option value="checkbox">Add Checkbox</option>
-      <option value="number">Add Number</option>
-    </select>
+    <div class="footer">
+      <select v-model="select">
+        <option value="none">Select</option>
+        <option value="text">Add Text</option>
+        <option value="texterea">Add Texterea</option>
+        <option value="radio">Add Radio</option>
+        <option value="checkbox">Add Checkbox</option>
+        <option value="number">Add Number</option>
+      </select>
+      <a-button v-on:click="submit" type="primary">Submit</a-button>
+    </div>
   </div>
 </template>
 
@@ -55,8 +58,14 @@ export default defineComponent({
       });
     });
 
+    const submit = () => {
+      console.log("submit!");
+      console.log(store.state.template.form);
+    };
+
     return {
       select,
+      submit,
       inputs: store.state.template.form.Inputs,
       title,
     };
@@ -78,11 +87,23 @@ export default defineComponent({
   justify-content: flex-start;
 }
 
+.footer {
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.footer * {
+  margin-right: 20px;
+}
+
 .selecor {
   border: solid 1px #eee;
   margin: 20px;
   padding: 10px;
 }
+
 label {
   margin-right: 10px;
   border: solid 1px #0000;
