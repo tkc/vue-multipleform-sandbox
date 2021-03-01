@@ -160,7 +160,7 @@ describe("TemplateState", () => {
     templateState.add(state, event);
     expect(state.form.Inputs[0].type).toBe(event.type);
     expect(state.form.Inputs.length).toBe(1);
-    templateState.addRadioOption(state, event.id);
+    templateState.addOption(state, event.id);
     expect(state.form.Inputs[0].options.length).toBe(2);
   });
 
@@ -185,7 +185,7 @@ describe("TemplateState", () => {
 
     const updateEvent = state.form.Inputs[0].options[0];
 
-    templateState.updateRadioOption(state, {
+    templateState.updateOption(state, {
       id: updateEvent.id,
       input_id: updateEvent.input_id,
       version: updateEvent.version,
@@ -219,7 +219,7 @@ describe("TemplateState", () => {
 
     // TOOD : use speciality event interface for delete.
     const delEvent = state.form.Inputs[0].options[0];
-    templateState.delRadioOption(state, {
+    templateState.delOption(state, {
       id: delEvent.id,
       input_id: delEvent.input_id,
       version: delEvent.version,
