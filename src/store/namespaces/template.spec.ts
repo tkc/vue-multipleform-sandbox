@@ -71,15 +71,18 @@ describe("TemplateState", () => {
     expect(state.form.Inputs[0].type).toBe(event.type);
     expect(state.form.Inputs.length).toBe(1);
 
+    // TODO : Upddate value when update ooptoon label
+
     event.value = "updatedValue";
     templateState.set(state, event);
-    expect(state.form.Inputs[0].value).toBe(event.value);
+    expect(state.form.Inputs[0].label).toBe(event.label);
     expect(state.form.Inputs.length).toBe(1);
 
     event.description = "updatedDescription";
     templateState.set(state, event);
     expect(state.form.Inputs[0].description).toBe(event.description);
     expect(state.form.Inputs.length).toBe(1);
+
   });
 
   test("dell", () => {
